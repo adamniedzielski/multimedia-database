@@ -1,8 +1,8 @@
 
-from directories_dialog import *
+from main_window import *
+from router import *
 import wx
 
 app = wx.App()
-dialog = DirectoriesDialog()
-dialog.ShowModal()
+MainWindow(Router())
 app.MainLoop()
