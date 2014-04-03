@@ -10,19 +10,25 @@ class MainWindow(wx.Frame):
     self.router = router
 
   def _init_ui(self):
+    self._init_menu()
+
     self.panel = wx.Panel(self)
     vertical_box = wx.BoxSizer(wx.VERTICAL)
 
-    button = wx.Button(self.panel, label = "Directories dialog")
-    button.Bind(wx.EVT_BUTTON, self._show_directories_dialog)
-
-    vertical_box.Add(button, 0, wx.TOP | wx.EXPAND, 40)
     self.panel.SetSizer(vertical_box)
     vertical_box.Fit(self)
 
     self.SetTitle('Multimedia database')
     self.SetSize((500, 500))
     self.Centre()
+
+  def _init_menu(self):
+    menu_bar = wx.MenuBar()
+    settings_menu = wx.Menu()
+    paths_item = settings_menu.Append(0, 'Search paths', 'Search paths')
+    menu_bar.Append(settings_menu, 'Settings')
+    self.SetMenuBar(menu_bar)
+    self.Bind(wx.EVT_MENU, self._show_directories_dialog, paths_item)
 
   def _show_directories_dialog(self, event):
     self.router.directories.show()
