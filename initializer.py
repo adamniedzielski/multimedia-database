@@ -1,8 +1,8 @@
 
-from main_window import *
 from router import *
 import wx
 
 app = wx.App()
-MainWindow(Router())
+router = Router()
+router.files.show()
 app.MainLoop()

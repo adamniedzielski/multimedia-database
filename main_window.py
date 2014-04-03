@@ -23,7 +23,6 @@ class MainWindow(wx.Frame):
     self.SetTitle('Multimedia database')
     self.SetSize((500, 500))
     self.Centre()
-    self.Show(True)
 
   def _show_directories_dialog(self, event):
     self.router.directories.show()
