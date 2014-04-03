@@ -1,4 +1,4 @@
 
-from directory import *
+from models.directory import *
 
 Directory.create_table(True)

@@ -1,6 +1,6 @@
 
 import wx
-from directories_controller import *
+from controllers.directories_controller import *
 
 class MainWindow(wx.Frame):
 

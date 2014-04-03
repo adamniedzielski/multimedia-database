@@ -1,6 +1,6 @@
 
-from directories_dialog import *
-from directory import *
+from views.directories_dialog import *
+from models.directory import *
 
 class DirectoriesController:
 

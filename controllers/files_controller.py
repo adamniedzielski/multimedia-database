@@ -1,5 +1,5 @@
 
-from main_window import *
+from views.main_window import *
 
 class FilesController:
 
