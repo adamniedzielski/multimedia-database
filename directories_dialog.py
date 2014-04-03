@@ -10,22 +10,17 @@ class DirectoriesDialog(wx.Dialog):
 
   def _init_ui(self):
     self.panel = wx.Panel(self)
-    vertical_box = wx.BoxSizer(wx.VERTICAL)
-    self.listbox = wx.ListBox(self, size = (200, -1))
+    main_box = wx.BoxSizer(wx.HORIZONTAL)
+    self.listbox = wx.ListBox(self, size = (600, 250))
 
-    add_button = wx.Button(self, label = "Add directory")
-    add_button.Bind(wx.EVT_BUTTON, self._on_add)
+    main_box.Add(self.listbox, 0, wx.ALL | wx.EXPAND, 10)
+    main_box.Add(self._buttons_sizer(), 0, wx.ALL | wx.EXPAND, 10)
 
-    delete_button = wx.Button(self, label = "Delete")
-    delete_button.Bind(wx.EVT_BUTTON, self._on_delete)
+    self.panel.SetSizer(main_box)
+    main_box.Fit(self)
 
-    vertical_box.Add(self.listbox, 0, wx.TOP | wx.EXPAND, 40)
-    vertical_box.Add(add_button, 0)
-    vertical_box.Add(delete_button, 0)
-
-    self.panel.SetSizer(vertical_box)
-    vertical_box.Fit(self)
-    self.SetSize((400, 400))
+    self.SetTitle("Search paths")
+    self.SetSize((800, 270))
 
   def set_directories(self, directories):
     self.listbox.Clear()
@@ -45,3 +40,16 @@ class DirectoriesDialog(wx.Dialog):
     if selection != wx.NOT_FOUND:
       self.router.directories.delete(self.listbox.GetClientData(selection))
 
+  def _buttons_sizer(self):
+    vertical_box = wx.BoxSizer(wx.VERTICAL)
+
+    add_button = wx.Button(self, label = "Add directory")
+    add_button.Bind(wx.EVT_BUTTON, self._on_add)
+
+    delete_button = wx.Button(self, label = "Delete")
+    delete_button.Bind(wx.EVT_BUTTON, self._on_delete)
+
+    vertical_box.Add(add_button, 0, wx.ALL | wx.EXPAND, 2)
+    vertical_box.Add(delete_button, 0, wx.ALL | wx.EXPAND, 2)
+
+    return vertical_box
