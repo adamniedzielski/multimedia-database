@@ -1,6 +1,7 @@
 
 from views.directories_dialog import *
 from models.directory import *
+from services.directory_service import *
 
 class DirectoriesController:
 
@@ -9,7 +10,7 @@ class DirectoriesController:
 
   def create(self, path):
     if Directory.select().where(Directory.path == path).count() == 0:
-      Directory.create(path = path)
+      DirectoryService(self.router).add_new_directory(path)
       self.view.set_directories(self._directories())
 
   def show(self):
@@ -19,7 +20,7 @@ class DirectoriesController:
     self.view.Destroy()
 
   def delete(self, directory):
-    directory.delete_instance()
+    DirectoryService(self.router).delete(directory)
     self.view.set_directories(self._directories())
 
   def _directories(self):

@@ -13,7 +13,9 @@ class MainWindow(wx.Frame):
     self._init_menu()
 
     self.panel = wx.Panel(self)
+    self.listbox = wx.ListBox(self, size = (600, 250))
     vertical_box = wx.BoxSizer(wx.VERTICAL)
+    vertical_box.Add(self.listbox)
 
     self.panel.SetSizer(vertical_box)
     vertical_box.Fit(self)
@@ -21,6 +23,12 @@ class MainWindow(wx.Frame):
     self.SetTitle('Multimedia database')
     self.SetSize((500, 500))
     self.Centre()
+
+  def set_files(self, files):
+    self.listbox.Clear()
+
+    for file in files:
+      self.listbox.Append(file.name, file)
 
   def _init_menu(self):
     menu_bar = wx.MenuBar()
