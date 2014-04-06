@@ -16,7 +16,13 @@ class MainWindow(wx.Frame):
     self.panel = wx.Panel(self)
     vertical_box = wx.BoxSizer(wx.VERTICAL)
     self._init_grid()
-    vertical_box.Add(self.grid, 0, wx.EXPAND)
+
+    play_button = wx.Button(self.panel, label = "Open and play", size = (300, 50))
+    play_button.Bind(wx.EVT_BUTTON, self._on_search)
+
+    vertical_box.Add(self._search_row(), 0, wx.ALL | wx.EXPAND, 10)
+    vertical_box.Add(play_button, 0, wx.ALL, 10)
+    vertical_box.Add(self.grid, 0, wx.ALL | wx.EXPAND, 10)
 
     self.panel.SetSizer(vertical_box)
     vertical_box.Fit(self)
@@ -67,7 +73,16 @@ class MainWindow(wx.Frame):
     self.grid.SetColLabelValue(5, "Duration")
     self.grid.SetColLabelValue(6, "Directory")
     self.grid.EnableEditing(False)
-    self.grid.SetSelectionMode(wx.grid.Grid.wxGridSelectRows)    
+    self.grid.SetSelectionMode(wx.grid.Grid.wxGridSelectRows)
+
+  def _search_row(self):
+    self.search_term = wx.TextCtrl(self.panel, size = (-1, 50))
+    self.search_term.Bind(wx.EVT_TEXT, self._on_search)
+
+    return self.search_term
 
   def _show_directories_dialog(self, event):
     self.router.directories.show()
+
+  def _on_search(self, event):
+    self.router.files.filter(self.search_term.GetValue())
