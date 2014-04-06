@@ -2,7 +2,7 @@
 import os
 import os.path
 from models.directory import *
-from models.file import *
+from file_service import *
 
 class DirectoryService:
 
@@ -31,5 +31,8 @@ class DirectoryService:
 
   def _add_new_files(self, directory):
     for entry in os.listdir(directory.path):
-      if os.path.isfile(os.path.join(directory.path, entry)):
-        File.create(directory = directory, name = entry)
+      if os.path.isfile(os.path.join(directory.path, entry)) and self._is_mp3(entry):
+        FileService().add_new_file(directory, entry)
+
+  def _is_mp3(self, name):
+    return name.endswith(".mp3")
