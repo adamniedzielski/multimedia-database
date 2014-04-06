@@ -18,7 +18,7 @@ class MainWindow(wx.Frame):
     self._init_grid()
 
     play_button = wx.Button(self.panel, label = "Open and play", size = (300, 50))
-    play_button.Bind(wx.EVT_BUTTON, self._on_search)
+    play_button.Bind(wx.EVT_BUTTON, self._on_open)
 
     vertical_box.Add(self._search_row(), 0, wx.ALL | wx.EXPAND, 10)
     vertical_box.Add(play_button, 0, wx.ALL, 10)
@@ -86,3 +86,9 @@ class MainWindow(wx.Frame):
 
   def _on_search(self, event):
     self.router.files.filter(self.search_term.GetValue())
+
+  def _on_open(self, event):
+    top_left = self.grid.GetSelectionBlockTopLeft()
+    if top_left:
+      row = top_left[0][0]
+      self.router.files.open(self.grid.GetCellValue(row, 0), self.grid.GetCellValue(row, 6))

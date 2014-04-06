@@ -1,4 +1,6 @@
 
+import os.path
+import subprocess
 from views.main_window import *
 from models.file import *
 
@@ -19,6 +21,10 @@ class FilesController:
   def filter(self, search_term):
     self._search_term = search_term
     self.update_view()
+
+  def open(self, name, directory):
+    file = os.path.join(directory, name)
+    subprocess.call(["xdg-open", file])
 
   def _files(self):
     query = '%' + self._search_term + '%'
