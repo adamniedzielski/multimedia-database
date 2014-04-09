@@ -2,6 +2,7 @@
 import wx
 import wx.grid
 from controllers.directories_controller import *
+from wx.lib.pubsub import Publisher
 
 class MainWindow(wx.Frame):
 
@@ -20,12 +21,14 @@ class MainWindow(wx.Frame):
     play_button = wx.Button(self.panel, label = "Open and play", size = (300, 50))
     play_button.Bind(wx.EVT_BUTTON, self._on_open)
 
-    vertical_box.Add(self._search_row(), 0, wx.ALL | wx.EXPAND, 10)
-    vertical_box.Add(play_button, 0, wx.ALL, 10)
-    vertical_box.Add(self.grid, 0, wx.ALL | wx.EXPAND, 10)
+    vertical_box.Add(self._search_row(), 1, wx.ALL | wx.EXPAND, 10)
+    vertical_box.Add(play_button, 1, wx.ALL, 10)
+    vertical_box.Add(self.grid, 10, wx.ALL | wx.EXPAND, 10)
 
     self.panel.SetSizer(vertical_box)
     vertical_box.Fit(self)
+
+    Publisher().subscribe(self._refresh, "refresh")
 
     self.SetTitle('Multimedia database')
     self.SetSize((1000, 700))
@@ -53,6 +56,14 @@ class MainWindow(wx.Frame):
       self.grid.SetCellValue(i, 6, files[i].directory.path or "")
 
     self.grid.AutoSize()
+
+    widget = self.grid
+    while widget.GetParent():
+      widget = widget.GetParent()
+      widget.Layout()
+      if widget.IsTopLevel():
+        break
+
 
   def _init_menu(self):
     menu_bar = wx.MenuBar()
@@ -92,3 +103,6 @@ class MainWindow(wx.Frame):
     if top_left:
       row = top_left[0][0]
       self.router.files.open(self.grid.GetCellValue(row, 0), self.grid.GetCellValue(row, 6))
+
+  def _refresh(self, event):
+    self.router.files.update_view()
